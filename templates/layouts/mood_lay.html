@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block layout %} 
+
+<content x-data="{ mobileSidebarOpen: false }">
+    
+    <main class="grid place-items-center min-h-screen bg-gradient-to-t from-blue-200 to-indigo-900 p-5">
+    
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</content>
+
+{% endblock %}
