@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from dotenv import load_dotenv
+import os
 import base64
 import json
 from requests import post, get
@@ -6,6 +8,7 @@ from requests import post, get
 # Create your views here.
 
 def home_page(request):
+    load_dotenv()
     return render(request, 'pages/landing.html')
 
 def mood_page(request):
@@ -43,8 +46,8 @@ class TrackDetails:
         self.imgUrl = imgUrl
 
 def get_token():
-    client_id = "1d94927406a64f8cb9da119123b25332"
-    client_secret = "875c88efc3284936bfd4d9bb763f3dec"
+    client_id = os.getenv("CLIENT_ID")
+    client_secret = os.getenv("CLIENT_SECRET")
     auth_str = client_id + ":" + client_secret
     auth_bytes = auth_str.encode("utf-8")
     auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
