@@ -12,6 +12,9 @@ def home_page(request):
     vec = [1, 2,3,4,5,6,7,8,9,10,11,12,13,14]
     return render(request, 'pages/landing.html', {'history': vec})
 
+def login_page(request):
+    return render(request, 'pages/login.html')
+
 def mood_page(request):
     token = get_token()
     mood = request.GET.get('type')
