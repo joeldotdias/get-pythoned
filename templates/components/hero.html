@@ -1,12 +1,33 @@
-<hero class="grid bg-gray-700 text-white text-center bg-cover z-10 relative bg-[url('https://cdn.pixabay.com/photo/2013/07/12/18/17/equalizer-153212_1280.png')]">
+{% if user.is_authenticated %}
+    <div class="grid place-items-end">
+        <a href="{% url 'user-logout' %}">
+            <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Logout
+                </span>
+            </button>
+        </a>
+    </div>
+{% endif %}
+
+<hero class="grid bg-gray-700 place-items-center text-white text-center bg-cover z-10 relative bg-[url('https://cdn.pixabay.com/photo/2013/07/12/18/17/equalizer-153212_1280.png')]">
     <div class="col-start-1 row-start-1 bg-gray-800 bg-opacity-40 w-full h-full"></div>
-    <div class="col-start-1 row-start-1 py-20 px-10 ">
+    <div class="col-start-1 row-start-1 py-20 px-10">
         <h1 class="font1 text-6xl title-fadein">MuRec</h1>
         <p class="text-lg font-bold mb-5">Get music recommendations for every mood</p>
-        <a class="button"
-            hx-get="{% url 'login' %}"
-            hx-push-url="true"
-            hx-target="body"
-        >Get Started</a>
+        {% if not user.is_authenticated %}
+            <div class="grid grid-cols-2 place-items-center">
+                <a class="button"
+                hx-get="{% url 'login' %}"
+                hx-push-url="true"
+                hx-target="body"
+                   >Login Now</a>
+                <a class="button"
+                hx-get="{% url 'signup' %}"
+                hx-push-url="true"
+                hx-target="body"
+                >Get Started</a>
+            </div>
+        {% endif %}
     </div>
 </hero>
