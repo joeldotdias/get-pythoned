@@ -9,17 +9,30 @@ from requests import post, get
 
 def home_page(request):
     load_dotenv()
-    return render(request, 'pages/landing.html')
+    vec = [1, 2,3,4,5,6,7,8,9,10,11,12,13,14]
+    return render(request, 'pages/landing.html', {'history': vec})
 
 def mood_page(request):
     token = get_token()
-    tracks = get_song_by_genre(token, "house")
-    print(request.GET.get('type'))
+    mood = request.GET.get('type')
+    genres = ""
+    if mood == "happy":
+        genres = "happy,pop,road-trip"
+    elif mood == "sad":
+        genres = "sad,emo,indie-pop"
+    elif mood == "turnt":
+        genres = "hip-hop,drum-and-bass,hard-rock"
+    elif mood == "mellow":
+        genres = "country,road-trip,chill"
+    else:
+        genres == "happy,sad,hip-hop,country"
+
+    tracks = get_song_by_genre(token, genres)
     return render(request, 'pages/mood.html', { 'tracks': tracks })
 
 
-def get_song_by_genre(token, genre):
-    url = f"https://api.spotify.com/v1/recommendations?seed_genres={genre}&country=IN"
+def get_song_by_genre(token, genres):
+    url = f"https://api.spotify.com/v1/recommendations?seed_genres={genres}&country=IN"
     headers = get_auth_header(token)
     res = get(url, headers=headers)
     json_res = json.loads(res.content)
@@ -48,6 +61,7 @@ class TrackDetails:
 def get_token():
     client_id = os.getenv("CLIENT_ID")
     client_secret = os.getenv("CLIENT_SECRET")
+    # auth_str = "{id}:{sec}".format(id = client_id, sec = client_secret)
     auth_str = client_id + ":" + client_secret
     auth_bytes = auth_str.encode("utf-8")
     auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
@@ -65,4 +79,3 @@ def get_token():
 
 def get_auth_header(token):
     return { "Authorization": "Bearer " + token }
-
