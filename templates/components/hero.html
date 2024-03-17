@@ -4,9 +4,8 @@
         <h1 class="font1 text-6xl title-fadein">MuRec</h1>
         <p class="text-lg font-bold mb-5">Get music recommendations for every mood</p>
         <a class="button"
-            hx-get="{% url 'mood' %}?type={{ 'happy' }}"
+            hx-get="{% url 'login' %}"
             hx-push-url="true"
-            hx-include="[name='type']"
             hx-target="body"
         >Get Started</a>
     </div>
