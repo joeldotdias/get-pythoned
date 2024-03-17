@@ -4,13 +4,20 @@ from django.contrib.auth.models import auth
 from .forms import SignUpForm, LoginForm
 from dotenv import load_dotenv
 from .helpers import get_token, get_song_by_genre
-
-# Create your views here.
+from .models import HistTrack
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def home_page(request):
     load_dotenv()
-    vec = [1, 2,3,4,5,6,7,8,9,10,11,12,13,14]
-    return render(request, 'pages/landing.html', {'history': vec})
+    history = []
+    
+    if request.user.is_authenticated:
+        curr_user = request.user.username
+        history = HistTrack.objects.filter(user_id=curr_user)
+        print(history)  
+
+    return render(request, 'pages/landing.html', {'history': history})
 
 def login_page(request):
     form = LoginForm()
@@ -67,3 +74,13 @@ def mood_page(request):
 def user_logout(request):
     auth.logout(request)
     return redirect('/')
+
+@csrf_exempt
+def add_song(request):
+    title = request.GET.get('title')
+    img_url = request.GET.get('img')
+    url = request.GET.get('spurl')
+    
+    if request.user.is_authenticated:
+        curr_user = request.user.username
+        HistTrack.objects.create(user_id=curr_user, title=title, url=url, img_url=img_url)

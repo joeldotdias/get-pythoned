@@ -24,5 +24,6 @@ urlpatterns = [
     path('mood', mood_page, name='mood'),
     path('login', login_page, name='login'),
     path('signup', signup_page, name='signup'),
-    path('user-logout', user_logout, name='user-logout')
+    path('user-logout', user_logout, name='user-logout'),
+    path('add-song', add_song, name='add-song')
 ]
