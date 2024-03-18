@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import auth
-from .forms import SignUpForm, LoginForm
+from django.views.decorators.csrf import csrf_exempt
+
 from dotenv import load_dotenv
+from .forms import SignUpForm, LoginForm
 from .helpers import get_token, get_song_by_genre
 from .models import HistTrack
-from django.views.decorators.csrf import csrf_exempt
-import json
+
+
 
 def home_page(request):
     load_dotenv()
@@ -15,8 +17,7 @@ def home_page(request):
     if request.user.is_authenticated:
         curr_user = request.user.username
         history = HistTrack.objects.filter(user_id=curr_user)
-        print(history)  
-
+        
     return render(request, 'pages/landing.html', {'history': history})
 
 def login_page(request):
@@ -55,6 +56,8 @@ def signup_page(request):
 def mood_page(request):
     token = get_token()
     mood = request.GET.get('type')
+    # apologies for such shitty code but putting this in a dict gives the wierdest errors
+    # perhaps my dict isn't big enough
     genres = ""
     if mood == "happy":
         genres = "happy,pop,road-trip"
